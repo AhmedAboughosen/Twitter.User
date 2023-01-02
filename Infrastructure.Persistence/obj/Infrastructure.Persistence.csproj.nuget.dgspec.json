@@ -27,7 +27,11 @@
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\codes\\Personal_Project\\twitter\\Twitter.User\\Core.Domain\\Core.Domain.csproj": {
+                "projectPath": "D:\\codes\\Personal_Project\\twitter\\Twitter.User\\Core.Domain\\Core.Domain.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -94,6 +98,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "MediatR.Contracts": {
+              "target": "Package",
+              "version": "[1.0.1, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.5, )"

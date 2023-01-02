@@ -1,6 +1,8 @@
+using MediatR;
+
 namespace Core.Domain.Model.DTO.RequestDTO
 {
-    public class UserRegistrationRequestDto
+    public class UserRegistrationRequestDto : IRequest<bool>
     {
         public string FullName { get; set; }
         public string Email { get; set; }

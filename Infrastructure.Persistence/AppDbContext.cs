@@ -7,6 +7,8 @@ namespace Infrastructure.Persistence
     public class AppDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        
+        public DbSet<Follower> Followers { get; set; }
 
 
         public AppDbContext()

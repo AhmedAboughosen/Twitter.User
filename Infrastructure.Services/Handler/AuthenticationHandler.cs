@@ -4,33 +4,36 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Core.Domain.Entities;
 using Core.Domain.Exceptions;
 using Core.Domain.Model.DTO.RequestDTO;
 using Core.Domain.Model.DTO.ResponseDto;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Infrastructure.Services.Services
+namespace Infrastructure.Services.Handler
 {
-    public class AuthenticationServices : ServicesBase
+    public class AuthenticationHandler : IRequestHandler<UserLoginRequestDto, UserLoginResponseDto>
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfigurationSection _jwtSettings;
 
-        public AuthenticationServices(UserManager<User> userManager, IConfiguration configuration)
+        public AuthenticationHandler(UserManager<User> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _jwtSettings = configuration.GetSection("JwtSettings");
         }
 
 
-        public async Task<UserLoginResponseDto> Login(UserLoginRequestDto userModel)
+        public async Task<UserLoginResponseDto> Handle(UserLoginRequestDto dto,
+            CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByEmailAsync(userModel.Email);
-            if (user != null && await _userManager.CheckPasswordAsync(user, userModel.Password))
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user != null && await _userManager.CheckPasswordAsync(user, dto.Password))
             {
                 var signingCredentials = GetSigningCredentials();
                 var claims = GetClaims(user);
@@ -57,6 +60,7 @@ namespace Infrastructure.Services.Services
                 "Invalid UserName or Password", HttpStatusCode.NotFound);
         }
 
+
         private SigningCredentials GetSigningCredentials()
         {
             var key = Encoding.UTF8.GetBytes(_jwtSettings.GetSection("securityKey").Value);
@@ -67,9 +71,9 @@ namespace Infrastructure.Services.Services
         private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
         {
             var tokenOptions = new JwtSecurityToken(
-                issuer: _jwtSettings.GetSection("Issuer").Value,
-                audience: _jwtSettings.GetSection("Audience").Value,
-                claims: claims,
+                _jwtSettings.GetSection("Issuer").Value,
+                _jwtSettings.GetSection("Audience").Value,
+                claims,
                 expires: DateTime.Now.AddMinutes(Convert.ToDouble(_jwtSettings.GetSection("TokenTimeout").Value)),
                 signingCredentials: signingCredentials);
             return tokenOptions;

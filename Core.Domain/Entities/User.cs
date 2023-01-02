@@ -9,13 +9,14 @@ namespace Core.Domain.Entities
     {
         public string FullName { get; private set; }
 
-        public State State { get; set; } = State.Active;
 
         public string Dob { get; private set; }
 
         public DateTime CreatedDate { get; private set; } = DateTime.UtcNow;
 
         public DateTime? LastLogin { get; private set; } = DateTime.UtcNow;
+
+        public State State { get; set; } = State.Active;
 
         public User(UserRegistrationRequestDto dto)
         {

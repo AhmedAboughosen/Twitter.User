@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "yWvjLDQv1vhYiHLOOeun8eel0pdhgchKGp3RZ+mkOXEkU0kdW3U7UcmPmxK1DNu0AdLSFTYw3LqUn1Lbzjtazw==",
+  "dgSpecHash": "dDojj8QNe8Z99DDnH1UA11nEbdPrP+5m9XngE7o3BVrhGlZhDs195qUy0RYE1pTUk7/F+2H0XJM24uWdaA2djQ==",
   "success": true,
   "projectFilePath": "D:\\codes\\Personal_Project\\twitter\\Twitter.User\\Core.Domain\\Core.Domain.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\a.hassan\\.nuget\\packages\\mediatr.contracts\\1.0.1\\mediatr.contracts.1.0.1.nupkg.sha512",
     "C:\\Users\\a.hassan\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.5\\microsoft.aspnetcore.cryptography.internal.5.0.5.nupkg.sha512",
     "C:\\Users\\a.hassan\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\5.0.5\\microsoft.aspnetcore.cryptography.keyderivation.5.0.5.nupkg.sha512",
     "C:\\Users\\a.hassan\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.5\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.5.nupkg.sha512",
