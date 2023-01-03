@@ -13,3 +13,5 @@ D:\codes\Personal_Project\twitter\Twitter.User\Infrastructure.Services\obj\Debug
 D:\codes\Personal_Project\twitter\Twitter.User\Infrastructure.Services\obj\Debug\net5.0\Infrastructure.Services.dll
 D:\codes\Personal_Project\twitter\Twitter.User\Infrastructure.Services\obj\Debug\net5.0\ref\Infrastructure.Services.dll
 D:\codes\Personal_Project\twitter\Twitter.User\Infrastructure.Services\obj\Debug\net5.0\Infrastructure.Services.pdb
+D:\codes\Personal_Project\twitter\Twitter.User\Infrastructure.Services\bin\Debug\net5.0\Core.Application.dll
+D:\codes\Personal_Project\twitter\Twitter.User\Infrastructure.Services\bin\Debug\net5.0\Core.Application.pdb

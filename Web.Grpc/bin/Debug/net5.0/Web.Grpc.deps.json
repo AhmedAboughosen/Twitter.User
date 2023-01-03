@@ -755,8 +755,20 @@
       },
       "System.Memory/4.5.3": {},
       "System.Security.Cryptography.Cng/4.5.0": {},
+      "Core.Application/1.0.0": {
+        "dependencies": {
+          "Core.Domain": "1.0.0"
+        },
+        "runtime": {
+          "Core.Application.dll": {}
+        },
+        "compile": {
+          "Core.Application.dll": {}
+        }
+      },
       "Core.Domain/1.0.0": {
         "dependencies": {
+          "MediatR.Contracts": "1.0.1",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.5",
           "Newtonsoft.Json": "13.0.2"
         },
@@ -769,6 +781,7 @@
       },
       "Infrastructure.Services/1.0.0": {
         "dependencies": {
+          "Core.Application": "1.0.0",
           "Core.Domain": "1.0.0",
           "Google.Protobuf": "3.21.12",
           "Grpc.Net.ClientFactory": "2.37.0",
@@ -2760,6 +2773,11 @@
       "sha512": "sha512-WG3r7EyjUe9CMPFSs6bty5doUqT+q9pbI80hlNzo2SkPkZ4VTuZkGWjpp77JB8+uaL4DFPRdBsAY+DX3dBK92A==",
       "path": "system.security.cryptography.cng/4.5.0",
       "hashPath": "system.security.cryptography.cng.4.5.0.nupkg.sha512"
+    },
+    "Core.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Core.Domain/1.0.0": {
       "type": "project",
