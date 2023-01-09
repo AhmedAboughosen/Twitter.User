@@ -3,8 +3,8 @@ using Core.Domain.Model.MessageBroker;
 
 namespace Core.Application.Contracts.Services
 {
-    public interface ISendEmailBusPublisher
+    public interface IMessageProducer
     {
-        public Task SendEmailAsync(EmailMessageModel message);
+        Task SendMessageAsync<T> (MessageBody<T>  message);
     }
 }

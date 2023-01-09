@@ -8,18 +8,18 @@ using RabbitMQ.Client;
 
 namespace Infrastructure.MessageBus.Publisher
 {
-    public class SendEmailBusPublisher : ISendEmailBusPublisher
+    public class MessageProducer : IMessageProducer
     {
         private readonly ConnectionFactory _connectionFactory;
         private readonly string _queueName;
 
-        public SendEmailBusPublisher(IConfiguration configuration)
+        public MessageProducer(IConfiguration configuration, ConnectionFactory connectionFactory)
         {
-            _connectionFactory = new ConnectionFactory() {HostName = configuration["MessageBroker:Localhost"]};
+            _connectionFactory = connectionFactory;
             _queueName = configuration["MessageBroker:QueueName"];
         }
 
-        public Task SendEmailAsync(EmailMessageModel message)
+        public Task SendMessageAsync<T>(MessageBody<T> message)
         {
             using var connection = _connectionFactory.CreateConnection();
             using var channel = connection.CreateModel();

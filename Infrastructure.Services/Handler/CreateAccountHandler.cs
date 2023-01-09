@@ -1,11 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Application.Contracts.Services;
 using Core.Domain.Entities;
 using Core.Domain.Enums;
 using Core.Domain.Exceptions;
 using Core.Domain.Model.DTO.RequestDTO;
+using Core.Domain.Model.MessageBroker;
 using Infrastructure.Services.Grpc.Protos.SendEmail;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -18,16 +21,16 @@ namespace Infrastructure.Services.Handler
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfigurationSection _jwtSettings;
-        private readonly EmailSender.EmailSenderClient _emailSenderClient;
+        private readonly IMessageProducer _messageProducer;
         private readonly LinkGenerator _linkGenerator;
 
         public CreateAccountHandler(UserManager<User> userManager, IConfigurationSection jwtSettings,
-            EmailSender.EmailSenderClient emailSenderClient, LinkGenerator linkGenerator)
+            LinkGenerator linkGenerator, IMessageProducer messageProducer)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
-            _emailSenderClient = emailSenderClient;
             _linkGenerator = linkGenerator;
+            _messageProducer = messageProducer;
         }
 
 
@@ -48,14 +51,18 @@ namespace Infrastructure.Services.Handler
 
             // var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { code, email = user.Email });
             // // var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
-            _emailSenderClient.SendEmailAsync(new EmailMessageRequest
+            await _messageProducer.SendMessageAsync(new MessageBody<EmailMessageRequest>
             {
-                To =
+                Data = new EmailMessageRequest
                 {
-                    user.Email
+                    To =
+                    {
+                        user.Email
+                    },
+                    Subject = "confirmation email",
+                    Content = confirmationLink
                 },
-                Subject = "confirmation email",
-                Content = confirmationLink
+                DateTime = DateTime.UtcNow
             });
 
             await _userManager.AddToRoleAsync(user, Roles.NormalUser.ToString());

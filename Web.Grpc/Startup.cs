@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Infrastructure.MessageBus;
+using Infrastructure.Persistence;
+using Infrastructure.Services;
 using Infrastructure.Services.Grpc.Protos.SendEmail;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,13 +9,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Web.Grpc.ExceptionHandler;
+using Web.Grpc.Interceptors;
 using Web.Grpc.Services;
 
 namespace Web.Grpc
 {
     public class Startup
     {
-        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,15 +25,24 @@ namespace Web.Grpc
         public IConfiguration Configuration { get; }
 
 
-        
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddGrpc();
-            
-            
-            services.AddGrpcClient< EmailSender.EmailSenderClient>((o) =>
+            services.AddGrpc(o =>
+            {
+                {
+                    o.Interceptors.Add<ThreadCultureInterceptor>();
+                    o.Interceptors.Add<ExceptionHandlingInterceptor>();
+                }
+            });
+
+            services.AddMessageBusRegistration(Configuration);
+            services.AddPersistenceRegistration(Configuration);
+            services.AddServicesRegistration(Configuration);
+
+
+            services.AddGrpcClient<EmailSender.EmailSenderClient>((o) =>
             {
                 o.Address = new Uri(Configuration["ClientUrls:EmailSenderClient"]);
             });
@@ -50,7 +60,7 @@ namespace Web.Grpc
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<UserService>();
 
                 endpoints.MapGet("/",
                     async context =>

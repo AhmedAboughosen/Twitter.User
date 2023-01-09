@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence
 {
     public static class PersistenceContainer
     {
-        public static IServiceCollection AdPersistenceRegistration(this IServiceCollection services,
+        public static IServiceCollection AddPersistenceRegistration(this IServiceCollection services,
             IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(options =>
