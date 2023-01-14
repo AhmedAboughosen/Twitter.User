@@ -8,15 +8,16 @@ using RabbitMQ.Client;
 
 namespace Infrastructure.MessageBus.Publisher
 {
-    public class MessageProducer : IMessageProducer
+    public class UserInfoProducer : IUserInfoPublisher
     {
         private readonly ConnectionFactory _connectionFactory;
-        private readonly string _queueName;
+        private readonly string _exchangeName;
+        private readonly string _userService = "UserService";
 
-        public MessageProducer(IConfiguration configuration, ConnectionFactory connectionFactory)
+        public UserInfoProducer(IConfiguration configuration, ConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
-            _queueName = configuration["MessageBroker:QueueName"];
+            _exchangeName = configuration["MessageBroker:ExchangeName"];
         }
 
         public Task SendMessageAsync<T>(MessageBody<T> message)
@@ -24,19 +25,17 @@ namespace Infrastructure.MessageBus.Publisher
             using var connection = _connectionFactory.CreateConnection();
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare(
-                queue: _queueName,
-                durable: false,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null);
-
+            channel.ExchangeDeclare(exchange: _exchangeName, type: ExchangeType.Fanout);
 
             var json = JsonConvert.SerializeObject(message);
 
             var body = Encoding.UTF8.GetBytes(json);
+            var properties = channel.CreateBasicProperties();
 
-            channel.BasicPublish("", _queueName, null, body);
+            properties.Type = message.Type;
+            properties.AppId = _userService;
+
+            channel.BasicPublish(exchange: _exchangeName, "", properties, body);
 
             return Task.CompletedTask;
         }

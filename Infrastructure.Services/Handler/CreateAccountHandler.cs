@@ -51,14 +51,11 @@ namespace Infrastructure.Services.Handler
 
             // var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { code, email = user.Email });
             // // var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
-            await _messageProducer.SendMessageAsync(new MessageBody<EmailMessageRequest>
+            await _messageProducer.SendMessageAsync(new MessageBody<EmailMessageModel>
             {
-                Data = new EmailMessageRequest
+                Data = new EmailMessageModel
                 {
-                    To =
-                    {
-                        user.Email
-                    },
+                    To = user.Email,
                     Subject = "confirmation email",
                     Content = confirmationLink
                 },

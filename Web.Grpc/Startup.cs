@@ -61,6 +61,7 @@ namespace Web.Grpc
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<UserService>();
+                endpoints.MapGrpcService<UserBuilderService>();
 
                 endpoints.MapGet("/",
                     async context =>

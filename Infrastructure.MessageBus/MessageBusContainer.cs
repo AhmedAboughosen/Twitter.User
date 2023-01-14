@@ -11,7 +11,8 @@ namespace Infrastructure.MessageBus
         public static IServiceCollection AddMessageBusRegistration(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddScoped<IMessageProducer, MessageProducer>();
+            services.AddScoped<IEmailMessagePublisher, EmailMessageProducer>();
+            services.AddScoped<IUserInfoPublisher, UserInfoProducer>();
             services.AddSingleton(s => new ConnectionFactory() {HostName = configuration["MessageBroker:Address"]});
 
             return services;
